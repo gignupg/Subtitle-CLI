@@ -4,7 +4,7 @@ export const emptyDirWarning = "This directory doesn't contain any .mkv or .srt 
 export const wrongArgsWarning = "Wrong args were passed into getListOfAvailableFiles()!";
 export const badInputWarning = "Invalid dir was passed into fs.readdirSync()!";
 
-export function getSelectableFiles(dir: string) {
+function getSelectableFiles(dir: string) {
     if (typeof dir === 'string') {
         let allFiles: string[] = [];
 
@@ -28,3 +28,5 @@ export function getSelectableFiles(dir: string) {
         console.warn(wrongArgsWarning);
     }
 }
+
+export default getSelectableFiles;

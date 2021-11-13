@@ -1,4 +1,4 @@
-import { getSelectableFiles, emptyDirWarning, wrongArgsWarning, badInputWarning } from './getSelectableFiles';
+import getSelectableFiles, { emptyDirWarning, wrongArgsWarning, badInputWarning } from './getSelectableFiles';
 
 describe('Return Value:', () => {
     test('should return array of all .srt and .mkv files!', () => {
@@ -21,7 +21,7 @@ describe('Warnings:', () => {
     });
 
     test('should display badInputWarning if fs.readdirSync() failed!', () => {
-        getSelectableFiles('/this/dir/doesnt/exist');
+        getSelectableFiles('/wrong/directory');
         expect(consoleWarnMock).toHaveBeenLastCalledWith(badInputWarning);
     });
 
