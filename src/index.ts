@@ -1,30 +1,38 @@
-import fs from 'fs';
+import inquirer from "inquirer";
+import { getSelectableFiles } from "./utils/getSelectableFiles";
 
-export const emptyDirWarning = "This directory doesn't contain any .mkv or .srt files!";
-export const wrongArgsWarning = "Wrong args were passed into getListOfAvailableFiles()!";
-export const badInputWarning = "Invalid dir was passed into fs.readdirSync()!";
+const currWorkingDir = process.cwd();
+const selectableFiles = getSelectableFiles(currWorkingDir);
 
-export function getListOfAvailableFiles(dir: string) {
-    if (typeof dir === 'string') {
-        let allFiles: string[] = [];
-
-        try {
-            allFiles = fs.readdirSync(dir);
-
-            const selectableFiles = allFiles.filter(file => /^.*\.(srt|mkv)$/i.test(file));
-
-            if (selectableFiles.length > 0) {
-                return selectableFiles;
-
-            } else {
-                console.warn(emptyDirWarning);
-            }
-
-        } catch {
-            console.warn(badInputWarning);
-        }
-
-    } else {
-        console.warn(wrongArgsWarning);
-    }
+if (selectableFiles) {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'file',
+                message: 'Select a file:',
+                choices: selectableFiles
+            },
+            {
+                type: 'list',
+                name: 'srt',
+                message: 'Select an action:',
+                choices: ['Audacity Label', 'Silence Count'],
+                when(answers) {
+                    return /^.*\.(srt)$/i.test(answers.file);
+                }
+            },
+            {
+                type: 'list',
+                name: 'mkv',
+                message: 'Select an action:',
+                choices: ['Extract Subtitles'],
+                when(answers) {
+                    return /^.*\.(mkv)$/i.test(answers.file);
+                }
+            },
+        ])
+        .then((answers) => {
+            console.log(JSON.stringify(answers, null, '  '));
+        });
 }
