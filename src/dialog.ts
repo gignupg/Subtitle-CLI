@@ -2,10 +2,10 @@ import inquirer from "inquirer";
 import createAudacityLabel from "./actions/audacityLabel/createAudacityLabel";
 import createSubtitlesWithSilence from "./actions/silenceCount/createSubtitlesWithSilence";
 import extractSubtitles from "./actions/subtitleExtractor/extractSubtitles";
+import getSubtitleTracks from "./actions/subtitleExtractor/getSubtitleTracks";
 
 const AUDACITY_LABEL = 'Audacity Label';
 const SILENCE_COUNT = 'Silence Count';
-const EXTRACT_SUBTITLES = 'Extract Subtitles';
 
 async function dialog(selectableFiles: string[]) {
     // Writing the questions object directly inside the prompt to get TypeScript support!
@@ -28,8 +28,11 @@ async function dialog(selectableFiles: string[]) {
         {
             type: 'list',
             name: 'mkv',
-            message: 'Select an Action:',
-            choices: [EXTRACT_SUBTITLES],
+            message: 'Extract Subtitles Track::',
+            choices(answers: Answers) {
+                const subtitleTracks = getSubtitleTracks(answers.file);
+                return subtitleTracks;
+            },
             when(answers: Answers) {
                 return /^.*\.(mkv)$/i.test(answers.file);
             }
@@ -53,8 +56,8 @@ async function dialog(selectableFiles: string[]) {
     } else if (srt === SILENCE_COUNT) {
         createSubtitlesWithSilence(file);
 
-    } else if (mkv === EXTRACT_SUBTITLES) {
-        extractSubtitles(file);
+    } else if (mkv) {
+        extractSubtitles(file, mkv[0]);
 
     } else {
         console.warn('Invalid selection at dialog.ts!');

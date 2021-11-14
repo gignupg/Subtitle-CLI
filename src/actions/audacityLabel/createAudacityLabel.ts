@@ -53,7 +53,7 @@ export default function createAudacityLabel(file: string, space: number | undefi
                         }
                     }
                 }))
-                .pipe(fs.createWriteStream(`${currWorkingDir}/new-audacity-label.txt`, encoding));
+                .pipe(fs.createWriteStream(`${currWorkingDir}/audacity-label.txt`, encoding));
 
         } else {
             console.warn('detectCharacterEncoding(fileBuffer) failed!');
