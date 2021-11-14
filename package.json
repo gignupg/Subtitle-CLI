@@ -19,9 +19,12 @@
   },
   "homepage": "https://github.com/gignupg/Subtitle-CLI#readme",
   "dependencies": {
-    "inquirer": "^8.2.0"
+    "detect-character-encoding": "^0.8.0",
+    "inquirer": "^8.2.0",
+    "subtitle": "^4.1.1"
   },
   "devDependencies": {
+    "@types/detect-character-encoding": "^0.7.0",
     "@types/inquirer": "^8.1.3",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
