@@ -60,7 +60,7 @@ export default function createAudacityLabel(file: string, space: number | undefi
         }
 
     } else {
-        console.warn('prepareAudacityLabel() was called with insufficient arguments!');
+        console.warn('createAudacityLabel() was called with insufficient arguments!');
     }
 }
 
